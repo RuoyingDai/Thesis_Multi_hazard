@@ -1,0 +1,44 @@
+C:/MultiHazard/Disaster/vulnerability of large dams considering hazard interacitons.pdf
+page = pdDocGetPage(doc, 1) # page handle
+doc = pdDocOpen("test/sample-google-doc.pdf")
+
+io = open("C:/MultiHazard/Data_Mining.txt", "a");
+write(io, "This stream is not read only")
+close(io)
+
+io = IOBuffer()
+pdPageExtractText(io, page)
+string(take!(io))
+
+] add Feather
+open(out, 'w')
+
+Feather.write("C:/MultiHazard/Data_Mining/trial.feather", pdPageExtractText(stdout, page))
+
+#
+function getPDFText(src, out)
+    doc = pdDocOpen(src)
+    docinfo = pdDocGetInfo(doc) 
+#
+    open(out, "w") do io
+        npage = pdDocGetPageCount(doc)
+#
+        for it=1:npage
+            page = pdDocGetPage(doc, it)
+            pdPageExtractText(io, page)
+        end
+    end
+#
+    pdDocClose(doc)
+    return docinfo
+end
+
+src = "C:/MultiHazard/Disaster/vulnerability of large dams considering hazard interacitons.pdf"
+out = "C:/MultiHazard/Data_Mining.txt"
+println(src) 
+println(out) 
+#
+getPDFText(src, out)
+
+with open('C:/MultiHazard/Data_Mining.txt', 'r') as file:
+    data = file.read().replace('\n', '')

@@ -1,0 +1,12 @@
+module load 2021
+module load Python/3.9.5-GCCcore-10.3.0-bare
+
+# start python, you will see >>>
+python
+
+# exit python
+exit()
+
+C:\MultiHazard\Code\bert_sentence_similarity.py
+
+C:/MultiHazard/Code/bert_sentence_similarity.py

@@ -1,0 +1,5 @@
+# clip raster file by extend(four coordiantes)
+processing.run("gdal:cliprasterbyextent", {'INPUT':'C:/MultiHazard/Data/GloElev_30as/GloElev_30as.asc','PROJWIN':'0.000000000,10.000000000,10.000000000,20.000000000','NODATA':None,'OPTIONS':'','DATA_TYPE':0,'EXTRA':'','OUTPUT':'TEMPORARY_OUTPUT'})
+
+# covert tif format to asc
+processing.run("gdal:translate", {'INPUT':'C:/MultiHazard/Data/soil_moisture/clip/trial.tif','TARGET_CRS':None,'NODATA':None,'COPY_SUBDATASETS':False,'OPTIONS':'','EXTRA':'','DATA_TYPE':0,'OUTPUT':'C:/MultiHazard/Data/soil_moisture/clip/trial3.asc'})

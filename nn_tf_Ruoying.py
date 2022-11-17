@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 from matplotlib import rc
-rc('text', usetex=False) 
+rc('text', usetex=False)
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -34,29 +34,29 @@ import pickle
 df = pd.read_csv('/Users/pika/Documents/multihazard/v27.csv')
         # intensity proxy
 X = df[['int_drought',
-       'int_earthquake', 'int_extreme_temp', 
+       'int_earthquake', 'int_extreme_temp',
        'int_flood', 'int_landslide',
        'int_tropical', 'int_unknown_storm', 'int_conv_storm',
         # background variables
-        'mm_fault_density', 'mm_slope',	
+        'mm_fault_density', 'mm_slope',
           'mm_road_density',
         # vulnerability variables
         'multi_phdi', 'multi_ppp','single_phdi', 'single_ppp']]
 y = df['ln10_Total_Damage']
 
 #split the data 80% training and 20% testing
-X_train, X_test, y_train, y_test = train_test_split(X, y, 
+X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     test_size=0.2, random_state = 4)
 
 import tensorflow as tf
-def R_squared(x, y, name = 'R_squared'):    
+def R_squared(x, y, name = 'R_squared'):
     mx = tf.math.reduce_mean(x)
     my = tf.math.reduce_mean(y)
     xm, ym = x-mx, y-my
-    r_num = tf.math.reduce_mean(tf.multiply(xm,ym))        
+    r_num = tf.math.reduce_mean(tf.multiply(xm,ym))
     r_den = tf.math.reduce_std(xm) * tf.math.reduce_std(ym)
     return r_num / r_den
-# from 
+# from
 # https://stackoverflow.com/questions/46619869/how-to-specify-the-correlation-coefficient-as-the-loss-function-in-keras
 
 #%%
@@ -64,13 +64,13 @@ plt.rcParams.update({'font.size': 16})
 def plot_2_metric_mean(history, name_str, p1,p2):
   #def plot_loss(history, name_str):
     #val_loss_mean = []
-    
 
-    plt.figure(dpi=120) 
-    plt.plot(history['mean_loss'], label='Training Loss', 
+
+    plt.figure(dpi=120)
+    plt.plot(history['mean_loss'], label='Training Loss',
              #color = (32/255,56/255,100/255), linewidth = 2)
              color = (225/255, 190/255, 106/255), linewidth = 2)
-    plt.plot(history['mean_val_loss'], label='Validation Loss', 
+    plt.plot(history['mean_val_loss'], label='Validation Loss',
              #color = (125/255,125/255,191/255), linewidth = 2)
              color = (64/255, 176/255, 166/255), linewidth = 2)
 
@@ -88,7 +88,7 @@ def plot_2_metric_mean(history, name_str, p1,p2):
 
 #
 #def plot_r2(history, name_str):
-    plt.figure(dpi=120) 
+    plt.figure(dpi=120)
     plt.plot(history['mean_R_squared'], label='Training R Squared',
              color = (32/255,56/255,100/255),  linewidth = 2)
     plt.plot(history['mean_val_R_squared'], label='Validation R Squared',
@@ -103,18 +103,18 @@ def plot_2_metric_mean(history, name_str, p1,p2):
                 bbox_inches='tight')
     plt.show()
     #plt.grid(True)
-           
+
 # def my_model
 
 def my_model0(lr, reg, lay,run_idx):
-    
+
     lay_idx =round(lay)
     print(lay_idx)
     lay2 =['tanh', 'relu', 'sigmoid']
     lay3 = ['relu', 'sigmoid', 'tanh']
     lay4 = ['sigmoid', 'tanh', 'relu']
     model = tf.keras.Sequential([
-      tf.keras.layers.Dense(128, activation='relu', 
+      tf.keras.layers.Dense(128, activation='relu',
                             activity_regularizer = tf.keras.regularizers.L1L2(l1=reg*1e-2, l2=reg*1e-1)),
       #tf.keras.layers.Dense(int(hp_neuron1), activation='relu'),
       tf.keras.layers.Dropout(0.3),
@@ -148,10 +148,10 @@ def my_model0(lr, reg, lay,run_idx):
             R_squared,
         ]
     )
-      
-    overfitCallback = tf.keras.callbacks.EarlyStopping(monitor='loss', 
-                                                   min_delta=0.00001, 
-                                                   patience = 500, 
+
+    overfitCallback = tf.keras.callbacks.EarlyStopping(monitor='loss',
+                                                   min_delta=0.00001,
+                                                   patience = 500,
                                                    mode = 'min')
     history = model.fit(np.array(X_train), np.array(y_train),
             batch_size=5,
@@ -193,14 +193,14 @@ def plot_history_dict(drop_out_rate, momentum,
     keys0 = history_list[0].keys()
     keys = [key for key in keys0]
     key_mean_series = {}
-    
+
     for key in keys:
         # possible problem: cannot calculate the mean
         key_mean_series['mean_'+key] = list(np.mean([history_list[i][key] for i in range(len(history_list))], axis = 0))
     with open('/Users/pika/Documents/multihazard/bo_nn/mean_drop{}_mom{}'.format(p1[:5],p2[:5]), "wb") as fp:   #Pickling
         pickle.dump(key_mean_series, fp)
     # Actually plotting
-    #plot_2_metric_mean(key_mean_series, 
+    #plot_2_metric_mean(key_mean_series,
     #                   'Drop out: {}/ Momentum: {}'.format(round(drop_out_rate,4),round(momentum,4)),
     #                   p1, p2)
     # return the validation loss of the last epoch
@@ -223,7 +223,7 @@ for run_idx  in range(num_run):
     val_metric += history_run['val_loss'][-1]
 p1 = str(learning_rate).replace(".", "_" )# learning rate
 # hyperparameter 2
-p2 = str(regularization).replace(".", "_")# regularization 
+p2 = str(regularization).replace(".", "_")# regularization
 p3 = round(layer) # activation function
 with open('/Users/pika/Documents/multihazard/bo_nn/adagrad_lr{}_reg{}_lay{}'.format(p1[:5],p2[:5],p3), "wb") as fp:   #Pickling
     pickle.dump(history, fp)
@@ -239,7 +239,7 @@ def my_model(learning_rate, regularization,layer):
         val_metric += history_run['val_loss'][-1]
     p1 = str(learning_rate).replace(".", "_" )# learning rate
     # hyperparameter 2
-    p2 = str(regularization).replace(".", "_")# regularization 
+    p2 = str(regularization).replace(".", "_")# regularization
     p3 = round(layer) # activation function
     with open('/Users/pika/Documents/multihazard/bo_nn/adagrad_lr{}_reg{}_lay{}'.format(p1[:5],p2[:5],p3), "wb") as fp:   #Pickling
         pickle.dump(history, fp)
@@ -277,8 +277,7 @@ aaa = pickle.load(open( "/Users/pika/Documents/multihazard/bo_nn/"+file_name, "r
 plt.plot(aaa[0]['loss'])
 #%%
 plt.plot(aaa[0]['val_loss'])
-#%%        
+#%%
 plt.plot(aaa[0]['R_squared'])
-#%%        
+#%%
 plt.plot(aaa[0]['val_R_squared'])
-

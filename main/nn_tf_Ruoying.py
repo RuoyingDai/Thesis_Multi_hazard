@@ -32,7 +32,7 @@ import tensorflow as tf
 
 
 # Data split
-df = pd.read_csv('/Users/pika/Documents/GitHub/Thesis_Multi_hazard/main/data/v27.csv')
+df = pd.read_csv('data/v27.csv')
         # intensity proxy
 X = df[['int_drought',
        'int_earthquake', 'int_extreme_temp',
@@ -80,7 +80,7 @@ def plot_2_metric_mean(history, name_str, p1,p2):
     plt.ylabel('Loss (MSE)')
     plt.legend()
 
-    plt.savefig('/Users/pika/Documents/multihazard/bo_nn_png/mse_drop{}_mom{}.png'.format(p1[:5],p2[:5]),
+    plt.savefig('mse_drop{}_mom{}.png'.format(p1[:5],p2[:5]),
                 dpi=120,
                 bbox_inches='tight')
     plt.show()
@@ -95,7 +95,7 @@ def plot_2_metric_mean(history, name_str, p1,p2):
     plt.xlabel('Epoch')
     plt.ylabel('Coefficient of Determination')
     plt.legend()
-    plt.savefig('/Users/pika/Documents/multihazard/bo_nn_png/r2_drop{}_mom{}.png'.format(p1[:5],p2[:5]),
+    plt.savefig('r2_drop{}_mom{}.png'.format(p1[:5],p2[:5]),
                 dpi=120,
                 bbox_inches='tight')
     plt.show()
@@ -172,7 +172,7 @@ def plot_history_dict(drop_out_rate, momentum,
     for key in keys:
         # possible problem: cannot calculate the mean
         key_mean_series['mean_'+key] = list(np.mean([history_list[i][key] for i in range(len(history_list))], axis = 0))
-    with open('/Users/pika/Documents/multihazard/bo_nn/mean_drop{}_mom{}'.format(p1[:5],p2[:5]), "wb") as fp:   #Pickling
+    with open('mean_drop{}_mom{}'.format(p1[:5],p2[:5]), "wb") as fp:   #Pickling
         pickle.dump(key_mean_series, fp)
     # Actually plotting
     #plot_2_metric_mean(key_mean_series,

@@ -281,41 +281,37 @@ shap.dependence_plot("multi_phdi", s, X_test.iloc[0:50,:], interaction_index="mm
 #plt.savefig('/Users/pika/Documents/multihazard/bo_nn_png/trial_shap2.png', format='png', dpi=150, bbox_inches='tight')
 
 
-    
- 
-    
-
 
 #%% Bayes Optimization
-pbounds = {'learning_rate': (1e-3, 5e-2),
-           'regularization': (10,30),
-           'layer':(-0.5, 2.5),
-           #'drop_out_rate': (0.2, 0.5),
-           #'momentum': (0.1, 0.5)
-           }
-optimizer = BayesianOptimization(
-    f = my_model,
-    pbounds = pbounds,
-    random_state = 42)
+# pbounds = {'learning_rate': (1e-3, 5e-2),
+#            'regularization': (10,30),
+#            'layer':(-0.5, 2.5),
+#            #'drop_out_rate': (0.2, 0.5),
+#            #'momentum': (0.1, 0.5)
+#            }
+# optimizer = BayesianOptimization(
+#     f = my_model,
+#     pbounds = pbounds,
+#     random_state = 42)
 
-optimizer.maximize(
-    init_points = 1,
-    n_iter = 4)
-#%%
-for i, res in enumerate(optimizer.res):
-    print('Iteration {}: \n\t{}'.format(i, res))
-    break
+# optimizer.maximize(
+#     init_points = 1,
+#     n_iter = 4)
+# #%%
+# for i, res in enumerate(optimizer.res):
+#     print('Iteration {}: \n\t{}'.format(i, res))
+#     break
 
-#%%
+# #%%
 
-#file_name = "adagrad_lr1_985_reg41_44_lay1"#1.48/1.39/crazy r2
-#file_name = "adagrad_lr0_061_reg5_541_lay1"#1.45/0.75/0.6/0.4
-aaa = pickle.load(open( "/Users/pika/Documents/multihazard/bo_nn/"+file_name, "rb"))
-#%%
-plt.plot(aaa[0]['loss'])
-#%%
-plt.plot(aaa[0]['val_loss'])
-#%%
-plt.plot(aaa[0]['R_squared'])
-#%%
-plt.plot(aaa[0]['val_R_squared'])
+# #file_name = "adagrad_lr1_985_reg41_44_lay1"#1.48/1.39/crazy r2
+# #file_name = "adagrad_lr0_061_reg5_541_lay1"#1.45/0.75/0.6/0.4
+# aaa = pickle.load(open( "/Users/pika/Documents/multihazard/bo_nn/"+file_name, "rb"))
+# #%%
+# plt.plot(aaa[0]['loss'])
+# #%%
+# plt.plot(aaa[0]['val_loss'])
+# #%%
+# plt.plot(aaa[0]['R_squared'])
+# #%%
+# plt.plot(aaa[0]['val_R_squared'])
